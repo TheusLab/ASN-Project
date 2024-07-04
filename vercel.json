@@ -1,23 +1,23 @@
 {
   "version": 2,
-  "name": "asn-project",
   "builds": [
     {
-      "src": "frontend/public/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "backend/go/main.go",
+      "src": "backend/main.go",
       "use": "@vercel/go"
     },
     {
-      "src": "backend/python/**/*.py",
-      "use": "@vercel/python"
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/backend/go/main.go" },
-    { "src": "/python/(.*)", "dest": "/backend/python/$1" },
-    { "src": "/(.*)", "dest": "/frontend/public/index.html" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/main.go"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
+    }
   ]
 }
