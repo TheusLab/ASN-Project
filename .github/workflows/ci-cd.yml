@@ -1,4 +1,4 @@
-name: Go CI
+name: Go Test Workflow
 
 on:
   push:
@@ -9,33 +9,31 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
+    services:
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+        ports:
+          - 9200:9200
+        options: --health-cmd='curl -f http://localhost:9200/_cat/health' --health-interval=10s --health-timeout=5s --health-retries=5
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Go 1.20
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.20
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
 
-    - name: Cache Go modules
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cache/go-build
-          /go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
+      - name: Install dependencies
+        run: |
+          cd backend
+          go mod download
 
-    - name: Install dependencies
-      run: go mod download
-
-    - name: Build
-      run: go build -v ./...
-
-    - name: Run tests
-      run: go test -v ./...
+      - name: Run tests
+        run: |
+          cd backend
+          go test ./...
