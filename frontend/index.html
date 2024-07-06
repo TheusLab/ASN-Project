@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASN Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #search-form {
+            margin-bottom: 20px;
+        }
+        #results {
+            list-style-type: none;
+            padding: 0;
+        }
+        .result-item {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ASN Search</h1>
+    <form id="search-form">
+        <input type="text" id="search-query" placeholder="Enter search query" required>
+        <button type="submit">Search</button>
+    </form>
+    <ul id="results"></ul>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const query = document.getElementById('search-query').value;
+            const response = await fetch('/api/search?q=' + encodeURIComponent(query));
+            const results = await response.json();
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+            results.forEach(result => {
+                const resultItem = document.createElement('li');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `<strong>${result.title}</strong><br><a href="${result.url}">${result.url}</a>`;
+                resultsContainer.appendChild(resultItem);
+            });
+        });
+    </script>
+</body>
+</html>
