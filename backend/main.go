@@ -1,13 +1,14 @@
 package main
 
 import (
-	"log"
+	"encoding/json"
 	"net/http"
-
-	"github.com/TheusLab/ASN-Project/backend/handlers"
+	"github.com/TheusLab/ASN-Project/backend/utils"
 )
 
-func main() {
-	http.HandleFunc("/api/search", handlers.SearchHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+func HandleRequest(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	results := utils.Search(query)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
 }
