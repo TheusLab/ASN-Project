@@ -2,30 +2,26 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/main.py",
-      "use": "@vercel/python"
-    },
-    {
       "src": "backend/main.go",
       "use": "@vercel/go"
     },
     {
-      "src": "frontend/package.json",
-      "use": "@vercel/next"
+      "src": "backend/api/main.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/index.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "api/main.py"
-    },
-    {
-      "src": "/backend/(.*)",
-      "dest": "backend/main.go"
+      "src": "/api/search",
+      "dest": "/backend/api/main.py"
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "/frontend/index.html"
     }
   ]
 }
