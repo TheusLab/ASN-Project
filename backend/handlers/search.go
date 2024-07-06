@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	"asn/utils"
 	"encoding/json"
 	"net/http"
+
+	"github.com/TheusLab/ASN-Project/backend/utils"
 )
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {

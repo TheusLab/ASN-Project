@@ -1,9 +1,10 @@
 package main
 
 import (
-	"asn/handlers"
 	"log"
 	"net/http"
+
+	"github.com/TheusLab/ASN-Project/backend/handlers"
 )
 
 func main() {
